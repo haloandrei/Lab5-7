@@ -8,20 +8,23 @@ from haloandrei.Movie import *
 from haloandrei.Client import *
 from datetime import datetime
 import datetime
+from _ctypes_test import func
 
 def PrintMenu():
-    print('~~~~~~~~~~~~[Movie Rental]~~~~~~~~~~~~~~ \n 1.add \n 2.remove \n 3.update \n 4.list \n 5.rent \n 6.return \n 7.display rented')
+    print('~~~~~~~~~~~~[Movie Rental]~~~~~~~~~~~~~~ \n 1.add \n 2.remove \n 3.update \n 4.list \n 5.rent \n 6.return \n 7.search \n 8.statistics')
     
 def ConsoleEngine():
     while True:
-        PrintMenu()
-        command = input('\n>')
-        if (command == 'x') : return
-        if ValidateCommand(command,7) == True :
-            CallFunctions(command)
-        else :
-            print('wrong input')
-        
+        try:
+            PrintMenu()
+            command = input('\n>')
+            if (command == 'x') : return
+            if ValidateCommand(command,9) == True :
+                CallFunctions(command)
+            else :
+                print('wrong input')
+        except:
+            pass
 def PrintChoiceBetweenMovieAndClient():
     print(' 1. for movie \n 2. for client \n')
     
@@ -96,14 +99,68 @@ def updateUI():
         updateClient(idOfUpdate,client)
 
 
-def DisplayRentals():
+def DisplayRentalsUI():
     RentalList = getRental()
     for Rental in RentalList :
             print(Rental.ToString())
 
 
+def SearchFieldMovieUI():
+    print('[Select Field]\n1. id\n2. title\n3. description\n4. genere')
+    return input('>')
+
+
+def SearchFieldClientUI():
+    print('[Select Field]\n1. id\n2. name')
+    return input('>')
+
+
+
+def SearchUI():
+    PrintChoiceBetweenMovieAndClient()
+    command = input('\n>')
+    if(command == '1') :
+        field = SearchFieldMovieUI()
+        searched = input('search for:\n>')
+        Result = SearchFieldMovie(field,searched)
+        for movie in Result :
+            print(movie.ToString())  
+    elif(command == '2'):
+        field = SearchFieldClientUI()
+        searched = input('search for:\n>')
+        Result = SearchFieldClient(field,searched)
+        for client in Result :
+            print(client.ToString())  
+
+
+def LateRentalsUI():
+    LateRentalList = sortDecreasingRentals(getLateRentals())
+    if (LateRentalList != None) :
+        for rental in LateRentalList:
+            print (rental.ToString())
+
+def MostActiveClientUI():
+    clientList = getMostActiveClient()
+    for client in clientList:
+        print(client.ToString())
+
+def MostRentedMovieUI():
+    movieList = getMostRentedMovie()
+    for movie in movieList:
+        print(movie.ToString())
+
+
+def GenerateStatisticsUI():
+    print('1. Most rented movie\n2. Most active client\n3. All rentals\n4.Late rentals')
+    functionList = {'1':MostRentedMovieUI, '2':MostActiveClientUI, '3':DisplayRentalsUI, '4':LateRentalsUI}
+    statistic = input('choose a statistic: \n>')
+    if statistic in functionList :
+        functionList[statistic]()
+    
+    
+
 def CallFunctions(command):
-    Functions = {'1':addUI, '2':removeUI, '3':updateUI, '4':listUI, '5':RentMovieUI, '6':ReturnMovieUI, '7':DisplayRentals}
+    Functions = {'1':addUI, '2':removeUI, '3':updateUI, '4':listUI, '5':RentMovieUI, '6':ReturnMovieUI, '7':SearchUI, '8':GenerateStatisticsUI}
     if command in Functions :
         Functions[command]()
     
@@ -112,6 +169,7 @@ def ValidateCommand(command,NumberOfCommands):
         return True
     else : return False
     
+
 def RentMovieUI():
     ClientId = input('Insert Client Id \n>')
     DesiredMovieId = input('Insert Movie Id \n')
@@ -119,6 +177,7 @@ def RentMovieUI():
     RentDate = RentDate.date()
     DueDate = RentDate + datetime.timedelta(days = 3)
     #rent = Rental(DesiredMovieId, ClientId, RentDate, DueDate, -1)
+
     RentMovie(DesiredMovieId, ClientId, RentDate, DueDate)
 
 def ReturnMovieUI():
@@ -175,3 +234,6 @@ def initialiseValues():
     addClient(client)
     client = Client('Vihart')
     addClient(client)
+    RentMovie(2, 3, datetime.date(2018, 4, 23), datetime.date(2018, 4, 28))
+    RentMovie(3, 4, datetime.date(2018, 5, 3), datetime.date(2018, 5, 9))
+    RentMovie(6, 5, datetime.date(2018, 6, 13), datetime.date(2018, 6, 20))

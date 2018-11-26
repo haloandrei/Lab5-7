@@ -54,6 +54,14 @@ class Repository():
             if objectFromList.getId() == int(IdSearched) :
                 return objectList.index(objectFromList)
         return -1
+    
+    @staticmethod
+    def getMovieByIndex(index):
+        return Repository.MovieList[index]
+    
+    @staticmethod
+    def getClientByIndex(index):
+        return Repository.ClientList[index]
 
     @staticmethod
     def UpdateMovie(index, movie):
@@ -97,14 +105,21 @@ class Repository():
     def CheckIfClientAvailable(id):
         
         if Repository.searchInRentalForClientId(id,Repository.RentalList) == -1 : return True
-        
         else : return False
 
     @staticmethod
     def removeRental( DesiredMovieId):
         del Repository.RentalList[Repository.searchInRentalForMovieId(DesiredMovieId, Repository.RentalList)]
     
+    @staticmethod
+    def getRentalByMovieId( DesiredMovieId):
+        return Repository.getRentalList()[Repository.searchInRentalForMovieId(DesiredMovieId, Repository.RentalList)]
     
+    @staticmethod
+    def returnRental( DesiredMovieId, dateOfReturn):
+        idRentalList = Repository.searchInRentalForMovieId(DesiredMovieId, Repository.RentalList)
+        #Repository.RentalList[idRentalList].setReturnDate(dateOfReturn)
+        del Repository.RentalList[idRentalList]
     
     
         

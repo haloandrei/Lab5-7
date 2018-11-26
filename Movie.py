@@ -7,11 +7,23 @@ class Movie():
         self.__title = titleParameter
         self.__description = descriptionParameter
         self.__genere = generParameter
+        self.__timesRented = 0
         Movie.CurrentId += 1
     
+    def getAmbiguous(self, Field):
+        if(Field == 'id') : return self.getId()
+        elif (Field == 'title') : return self.getTitle()
+        elif (Field == 'description') : return self.getDescription()
+        elif (Field == 'genere') : return self.getGenere()
+        
     def getId(self):
         return self.__movieId
-
+    
+    def getTimesRented(self):
+        return self.__timesRented
+    
+    def incTimesRented(self):
+        self.__timesRented += 1
 
     def getTitle(self):
         return self.__title
@@ -41,6 +53,6 @@ class Movie():
         self.__genere = value
     
     def ToString(self):
-        return str(self.__movieId) + ' | ' + str(self.__title) + ' | ' + str(self.__description) + ' | ' + str(self.__genere) 
+        return str(self.__movieId) + ' | ' + str(self.__title) + ' | ' + str(self.__description) + ' | ' + str(self.__genere) + ' | ' + str(self.__timesRented)
     
         
