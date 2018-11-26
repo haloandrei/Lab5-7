@@ -188,6 +188,12 @@ def ReturnMovieUI():
     ReturnMovie(ClientId,DesiredMovieId,ReturnDate)
     
 def initialiseValues():
+    NameList = ['Another','Bothersome','Counter','Awesome', 'Ultimate','Final','Fantastic','The']
+    SecondNameList = ['Party','Father','Test','Chicks','Alien Invasion', 'Anihiliation','Blow']
+    DescriptionList = ['The best movie of the month','Must watch','Full of suspense','You won t regret this','Time well spent!']
+    GenereList = ['action','comedy','drama','thriller','documentary','romance','adventure']
+    movie = Movie('moby','a whale','action')
+    addMovie(movie)
     movie = Movie('moby','a whale','action')
     addMovie(movie)
     movie = Movie('Bohemian Rapsody','Queen`s story','documentary')
